@@ -5,6 +5,8 @@ public class PlayerMovement : MonoBehaviour
 {
    private const string Horizontal = nameof(Horizontal);
    private const string JumpButton = "Jump";
+
+   [SerializeField] private Animator _animator;
    
    [SerializeField] private Rigidbody2D _rb;
    [SerializeField] private float _speed = 10f;
@@ -40,9 +42,14 @@ public class PlayerMovement : MonoBehaviour
 
    private void Move()
    {
-      float direction = Input.GetAxis(Horizontal);
+      float direction = Input.GetAxisRaw(Horizontal);
       float distance = direction * _speed * Time.deltaTime;
       var position = new Vector3(distance, 0, 0);
+      
+      if(direction != 0)
+         _animator.SetBool("IsWalk", true);
+      else
+         _animator.SetBool("IsWalk", false);
       
       transform.Translate(position);
    }

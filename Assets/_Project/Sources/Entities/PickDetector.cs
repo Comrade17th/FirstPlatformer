@@ -8,7 +8,6 @@ public class PickDetector : MonoBehaviour
     {
         if (other.TryGetComponent(out ItemPicker picker))
         {
-            Debug.Log($"Picked {name}");
             picker.Pick(_pickableItem);
             gameObject.SetActive(false);
         }

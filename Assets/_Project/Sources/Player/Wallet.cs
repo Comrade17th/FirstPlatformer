@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Wallet : MonoBehaviour
@@ -10,7 +7,6 @@ public class Wallet : MonoBehaviour
 
    private void OnEnable()
    {
-      Debug.Log("Subscribed");
       _picker.PickedCoin += CollectCoins;
    }
 
@@ -21,11 +17,9 @@ public class Wallet : MonoBehaviour
 
    private void CollectCoins(int amount)
    {
-      Debug.Log("Coin try added");
       if(amount <= 0)
          return;
       
       _money += amount;
-      Debug.Log(_money);
    }
 }

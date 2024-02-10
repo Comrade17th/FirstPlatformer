@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ItemPicker : MonoBehaviour
@@ -21,12 +19,10 @@ public class ItemPicker : MonoBehaviour
     private void Pick(PickableCoin coin)
     {
         PickedCoin?.Invoke(coin.Amount);
-        Debug.Log("Invoked");
     }
     
     private void Pick(PickableMedicine medicine)
     {
-        Debug.Log("Picked Medicine");
         PickedMedicine?.Invoke(medicine.HealthRegen);
     }
 }

@@ -1,25 +1,12 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 
 public class Coin : MonoBehaviour
 {
+    [SerializeField] private Rigidbody2D _rb;
     [SerializeField] private Animation _animation;
     
-    private void Update()
+    public void Launch(Vector2 force)
     {
-        
-    }
-
-    private void Move()
-    {
-        
-    }
-
-    private void Rotate()
-    {
-        
+        _rb.AddForce(force, ForceMode2D.Impulse);
     }
 }
