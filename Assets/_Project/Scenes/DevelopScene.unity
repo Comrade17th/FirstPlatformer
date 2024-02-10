@@ -1799,16 +1799,17 @@ MonoBehaviour:
   _animator: {fileID: 1753951931}
   _rb: {fileID: 1735805214}
   _speed: 10
-  _jumpForce: 16
+  _speedInAirModifier: 0.6
+  _jumpForce: 7
   _jumpCoolDown: 0.4
   _coyoteTime: 0.2
   _jumpBufferTime: 0.2
-  _jumpHighMultiplier: 0.2
   _groundCheck: {fileID: 1997922440}
   _groundLayer:
     serializedVersion: 2
     m_Bits: 64
   _groundCheckRadius: 0.2
+  _jumpBufferCounter: 0
 --- !u!50 &1735805214
 Rigidbody2D:
   serializedVersion: 4

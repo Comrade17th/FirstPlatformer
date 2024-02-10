@@ -10,12 +10,12 @@ public class PlayerMovement : MonoBehaviour
    
    [SerializeField] private Rigidbody2D _rb;
    [SerializeField] private float _speed = 10f;
+   [SerializeField] private float _speedInAirModifier = 0.6f;
    
-   [SerializeField] private float _jumpForce = 16f;
+   [SerializeField] private float _jumpForce = 5f;
    [SerializeField] private float _jumpCoolDown = 0.4f;
    [SerializeField] private float _coyoteTime = 0.2f;
    [SerializeField] private float _jumpBufferTime = 0.2f;
-   [SerializeField] private float _jumpHighMultiplier = 0.5f;
    
    [SerializeField] private Transform _groundCheck;
    [SerializeField] private LayerMask _groundLayer;
@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
    
    private WaitForSeconds _jumpWait;
    private float _coyoteTimeCounter;
-   private float _jumpBufferCounter;
+   [SerializeField] private float _jumpBufferCounter;
    private bool _isJumping;
    
    private bool _isFacingRight = true;
@@ -51,7 +51,10 @@ public class PlayerMovement : MonoBehaviour
       else
          _animator.SetBool("IsWalk", false);
       
-      transform.Translate(position);
+      if(IsGrounded())
+         transform.Translate(position);
+      else
+         transform.Translate(position * _speedInAirModifier);
    }
 
    private void Jump()
@@ -67,8 +70,7 @@ public class PlayerMovement : MonoBehaviour
       }
       else
       {
-         if(_jumpBufferCounter > 0)
-            _jumpBufferCounter -= Time.deltaTime;
+         _jumpBufferCounter -= Time.deltaTime;
       }
 
       if (_coyoteTimeCounter > 0f && _jumpBufferCounter > 0f && !_isJumping)
@@ -81,7 +83,7 @@ public class PlayerMovement : MonoBehaviour
 
       if (Input.GetButtonUp(JumpButton) && _rb.velocity.y > 0f)
       {
-         _rb.velocity = new Vector2(_rb.velocity.x, _rb.velocity.y * _jumpHighMultiplier);
+         _rb.velocity = new Vector2(_rb.velocity.x, _rb.velocity.y);
          _coyoteTimeCounter = 0f;
       }
    }
