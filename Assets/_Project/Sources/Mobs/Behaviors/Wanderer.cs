@@ -48,7 +48,7 @@ public class Wanderer : MonoBehaviour
     private int ChangeWaypoint()
     {
         int newWaypoint;
-
+        
         do
         {
             newWaypoint = Random.Range(0, _waypoints.Count);
