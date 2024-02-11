@@ -9,11 +9,6 @@ public class ItemPicker : MonoBehaviour
     
     public void Pick(PickableItem item)
     {
-        if(item is PickableCoin)
-            Pick(item as PickableCoin);
-        
-        if(item is PickableMedicine)
-            Pick(item as PickableMedicine);
     }
     
     private void Pick(PickableCoin coin)

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Wanderer : MonoBehaviour
 {
-    [SerializeField] private List<Transform> _waypoints;
+    [SerializeField] private Transform _waypointsParent;
     [SerializeField] private float _waypointPositionSpread = 2f;
     [SerializeField] private float _speed = 3f;
     [SerializeField, Min(0)] private float _stayTimeBase = 1f;
@@ -14,16 +14,19 @@ public class Wanderer : MonoBehaviour
     private Vector3 _targetPosition;
     private WaitForSeconds _stayTime;
     private bool _isStaying = false;
-
-    private void Start()
-    {
-        ChangeWaypoint();
-        _targetPosition = transform.position;
-        InitStayTime();
-    }
+    private bool _isFacingRight = true;
+    private Transform[] _waypoints;
     
     private void Update()
     {
+        if(_waypoints != null)
+            FollowWaypoints();
+    }
+
+    private void FollowWaypoints()
+    {
+        Flip();
+        
         if(transform.position == _targetPosition)
         {
             _currentWaypoint = ChangeWaypoint();
@@ -33,9 +36,16 @@ public class Wanderer : MonoBehaviour
         
         if(_isStaying == false)
             transform.position = Vector3.MoveTowards(
-                 transform.position,
-                  _targetPosition, 
+                transform.position,
+                _targetPosition, 
                 _speed * Time.deltaTime);
+    }
+
+    private void InitWaypoints()
+    {
+        _waypoints = new Transform[_waypointsParent.childCount];
+        for (int i = 0; i < _waypoints.Length; i++)
+            _waypoints[i] = _waypointsParent.GetChild(i);
     }
 
     private Vector3 SpreadWaypointPosition(Vector3 position)
@@ -51,7 +61,7 @@ public class Wanderer : MonoBehaviour
         
         do
         {
-            newWaypoint = Random.Range(0, _waypoints.Count);
+            newWaypoint = Random.Range(0, _waypoints.Length);
         } while (newWaypoint == _currentWaypoint);
         
         return newWaypoint;
@@ -66,11 +76,34 @@ public class Wanderer : MonoBehaviour
 
         _stayTime = new WaitForSeconds(time);
     }
-    
+
+    private void Flip()
+    {
+        float direction = _targetPosition.x - transform.position.x;
+        
+        if (_isFacingRight && direction < 0f || !_isFacingRight && direction > 0f)
+        {
+            Vector3 localScale = transform.localScale;
+
+            _isFacingRight = !_isFacingRight;
+            localScale.x *= -1f;
+            transform.localScale = localScale;
+        }
+    }
+
     private IEnumerator Stay()
     {
         _isStaying = true;
         yield return _stayTime;
         _isStaying = false;
+    }
+
+    public void SetWaypointsParent(Transform waypointParent)
+    {
+        _waypointsParent = waypointParent;
+        InitWaypoints();
+        ChangeWaypoint();
+        _targetPosition = transform.position;
+        InitStayTime();
     }
 }
