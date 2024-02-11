@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Linq.Expressions;
 using UnityEngine;
 
@@ -6,22 +7,31 @@ using UnityEngine;
 [RequireComponent(typeof(Wanderer))]
 public class Mob : MonoBehaviour
 {
-    [SerializeField] private float _health = 35;
-    [SerializeField] private float _baseDamage = 10;
+    [SerializeField] private CoinSpawner _coinSpawner;
     [SerializeField] private Wanderer _wanderer;
+    [SerializeField] private float _healthBase = 35;
+    [SerializeField] private float _health;
+    [SerializeField] private float _baseDamage = 10;
+    [SerializeField] private float _attackCoolDown = 2f;
+    [SerializeField] private float _timeToDie = 1f;
     
     private MobAnimator _animator;
     private MobSpawner _spawner;
+    
     private int _spawnId;
+    private WaitForSeconds _waitDie;
+    private WaitForSeconds _waitAttack;
+    private bool _isAbleToAttack = true;
 
-    private void Start()
+    public event Action Dead;
+
+    private void Awake()
     {
+        _health = _healthBase;
+        _waitAttack = new WaitForSeconds(_attackCoolDown);
+        _waitDie = new WaitForSeconds(_timeToDie);
         _animator = GetComponent<MobAnimator>();
-    }
-
-    private void Attack(Player player)
-    {
-        player.TakeDamage(_baseDamage);
+        _coinSpawner = GetComponent<CoinSpawner>();
     }
 
     public void TakeDamage(float damage)
@@ -32,11 +42,41 @@ public class Mob : MonoBehaviour
         if(_health <= 0)
             Die();
     }
-
+    
     private void Die()
     {
-        Debug.Log("Mob is dead");
+        Debug.Log("Starting burst");
+        _coinSpawner.SpawnBurst();
+        Debug.Log("Ending burst");
+        StartCoroutine(WaitDie());
+    }
+
+    private IEnumerator AttackCooldown()
+    {
+        _isAbleToAttack = false;
+        yield return _waitAttack;
+        _isAbleToAttack = true;
+    }
+    
+    private IEnumerator WaitDie()
+    {
+        yield return _waitDie;
+        Dead?.Invoke();
         _spawner.MobDead(_spawnId);
+    }
+    
+    public void Attack(Player player)
+    {
+        if (_isAbleToAttack)
+        {
+            player.TakeDamage(_baseDamage);
+            StartCoroutine(AttackCooldown());
+        }
+    }
+
+    public void SetAlive()
+    {
+        _health = _healthBase;
     }
 
     public void SetSpawner(MobSpawner spawner, int id)

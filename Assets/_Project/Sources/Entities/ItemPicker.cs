@@ -5,19 +5,22 @@ public class ItemPicker : MonoBehaviour
 {
     public event Action<string> PickedItem;
     public event Action<int> PickedCoin;
-    public event Action<int> PickedMedicine;
+    public event Action<float> PickedMedicine;
     
     public void Pick(PickableItem item)
     {
     }
     
-    private void Pick(PickableCoin coin)
+    public void Pick(PickableCoin coin)
     {
+        Debug.Log("coin");
         PickedCoin?.Invoke(coin.Amount);
+        Debug.Log("Invoked");
     }
     
-    private void Pick(PickableMedicine medicine)
+    public void Pick(PickableMedicine medicine)
     {
+        Debug.Log("Medicine Picked");
         PickedMedicine?.Invoke(medicine.HealthRegen);
     }
 }

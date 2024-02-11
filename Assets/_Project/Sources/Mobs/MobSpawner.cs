@@ -21,7 +21,6 @@ public class MobSpawner : MonoBehaviour
     {
         _wait = new WaitForSeconds(_spawnRate);
         InitMobs();
-        // _spawnCoroutine = StartCoroutine(SpawnFromPool());
     }
 
     private void InitMobs()
@@ -56,6 +55,7 @@ public class MobSpawner : MonoBehaviour
     private void Respawn(int id)
     {
         Mob mob = _mobsPool[id];
+        mob.SetAlive();
         mob.transform.position = transform.position;
         mob.gameObject.SetActive(true);
     }

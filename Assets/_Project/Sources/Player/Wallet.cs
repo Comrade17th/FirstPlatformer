@@ -7,6 +7,7 @@ public class Wallet : MonoBehaviour
 
    private void OnEnable()
    {
+      Debug.Log("Subscribed");
       _picker.PickedCoin += CollectCoins;
    }
 

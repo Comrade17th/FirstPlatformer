@@ -28,7 +28,7 @@ public class PlayerAnimator : MonoBehaviour
 
     public void SetAttacked()
     {
-        _animator.SetTrigger(PlayerAnimatorData.Params.IsAttacked);
+        _animator.SetTrigger(PlayerAnimatorData.Params.Attacked);
     }
 
     public void SetAttacks()
