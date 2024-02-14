@@ -9,8 +9,9 @@ public class Mob : MonoBehaviour
 {
     [SerializeField] private CoinSpawner _coinSpawner;
     [SerializeField] private Wanderer _wanderer;
-    [SerializeField] private float _healthBase = 35;
-    [SerializeField] private float _health;
+    [SerializeField] private HealthController _healthController;
+    // [SerializeField] private float _healthBase = 35;
+    // [SerializeField] private float _health;
     [SerializeField] private float _baseDamage = 10;
     [SerializeField] private float _attackCoolDown = 2f;
     [SerializeField] private float _timeToDie = 1f;
@@ -27,7 +28,6 @@ public class Mob : MonoBehaviour
 
     private void Awake()
     {
-        _health = _healthBase;
         _waitAttack = new WaitForSeconds(_attackCoolDown);
         _waitDie = new WaitForSeconds(_timeToDie);
         _animator = GetComponent<MobAnimator>();
@@ -36,10 +36,10 @@ public class Mob : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        _health -= damage;
+        _healthController.TakeDamage(damage);
         _animator.SetAtacked();
         
-        if(_health <= 0)
+        if(_healthController.Health <= 0)
             Die();
     }
     
@@ -76,7 +76,7 @@ public class Mob : MonoBehaviour
 
     public void SetAlive()
     {
-        _health = _healthBase;
+        _healthController.SetAlive();
     }
 
     public void SetSpawner(MobSpawner spawner, int id)

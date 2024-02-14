@@ -8,11 +8,10 @@ public class Player : MonoBehaviour
 {
     private const int LeftMouseButton = 0;
     
-    [SerializeField] private float _healthBase = 100;
-    [SerializeField] private float _health = 100;
     [SerializeField] private float _baseDamage = 10;
     [SerializeField] private float _attackCoolDown = 2f;
-    
+
+    [SerializeField] private HealthController _healthController;
     [SerializeField] private AttackController _attackController;
     [SerializeField] private ItemPicker _picker;
     
@@ -44,11 +43,7 @@ public class Player : MonoBehaviour
 
     private void Heal(float health)
     {
-        Debug.Log("Healed");
-        
-        _health += health;
-        if (_health > _healthBase)
-            _health = _healthBase;
+        _healthController.Heal(health);
     }
     
     private void Die()
@@ -75,10 +70,9 @@ public class Player : MonoBehaviour
     
     public void TakeDamage(float damage)
     {
-        _health -= damage;
         _animator.SetAttacked();
-        
-        if(_health <= 0)
+        _healthController.TakeDamage(damage);
+        if(_healthController.Health <= 0)
             Die();
     }
 }
