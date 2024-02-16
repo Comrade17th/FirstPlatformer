@@ -55,9 +55,9 @@ public class MobSpawner : MonoBehaviour
     private void Respawn(int id)
     {
         Mob mob = _mobsPool[id];
+        mob.gameObject.SetActive(true);
         mob.SetAlive();
         mob.transform.position = transform.position;
-        mob.gameObject.SetActive(true);
     }
 
     public void MobDead(int id)

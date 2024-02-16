@@ -5,13 +5,12 @@ using UnityEngine;
 
 [RequireComponent(typeof(MobAnimator))]
 [RequireComponent(typeof(Wanderer))]
+[RequireComponent(typeof(Health))]
 public class Mob : MonoBehaviour
 {
     [SerializeField] private CoinSpawner _coinSpawner;
     [SerializeField] private Wanderer _wanderer;
-    [SerializeField] private HealthController _healthController;
-    // [SerializeField] private float _healthBase = 35;
-    // [SerializeField] private float _health;
+    [SerializeField] private Health _health;
     [SerializeField] private float _baseDamage = 10;
     [SerializeField] private float _attackCoolDown = 2f;
     [SerializeField] private float _timeToDie = 1f;
@@ -32,22 +31,21 @@ public class Mob : MonoBehaviour
         _waitDie = new WaitForSeconds(_timeToDie);
         _animator = GetComponent<MobAnimator>();
         _coinSpawner = GetComponent<CoinSpawner>();
+        _health = GetComponent<Health>();
     }
 
     public void TakeDamage(float damage)
     {
-        _healthController.TakeDamage(damage);
+        _health.TakeDamage(damage);
         _animator.SetAtacked();
         
-        if(_healthController.Health <= 0)
+        if(_health.IsAlive == false)
             Die();
     }
     
     private void Die()
     {
-        Debug.Log("Starting burst");
         _coinSpawner.SpawnBurst();
-        Debug.Log("Ending burst");
         StartCoroutine(WaitDie());
     }
 
@@ -76,7 +74,7 @@ public class Mob : MonoBehaviour
 
     public void SetAlive()
     {
-        _healthController.SetAlive();
+        _health.Heal(_health.MaxValue);
     }
 
     public void SetSpawner(MobSpawner spawner, int id)

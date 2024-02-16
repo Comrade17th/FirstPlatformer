@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
    private const string Horizontal = nameof(Horizontal);
    private const string JumpButton = "Jump";
    
+   [SerializeField] private Transform _view;
    [SerializeField] private Rigidbody2D _rigidbody;
    [SerializeField] private float _speed = 10f;
    [SerializeField] private float _speedInAirModifier = 0.6f;
@@ -100,11 +101,12 @@ public class PlayerMovement : MonoBehaviour
       
       if (_isFacingRight && direction < 0f || !_isFacingRight && direction > 0f)
       {
-         Vector3 localScale = transform.localScale;
+         Vector3 localScale = _view.localScale;
          
          _isFacingRight = !_isFacingRight;
+         
          localScale.x *= -1f;
-         transform.localScale = localScale;
+         _view.localScale = localScale;
       }
    }
 

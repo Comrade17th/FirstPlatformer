@@ -1,17 +1,14 @@
-using System;
-using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 
-
+[RequireComponent(typeof(Health))]
 public class Player : MonoBehaviour
 {
     private const int LeftMouseButton = 0;
     
     [SerializeField] private float _baseDamage = 10;
     [SerializeField] private float _attackCoolDown = 2f;
-
-    [SerializeField] private HealthController _healthController;
+    [SerializeField] private Health _health;
     [SerializeField] private AttackController _attackController;
     [SerializeField] private ItemPicker _picker;
     
@@ -19,8 +16,8 @@ public class Player : MonoBehaviour
     
     private bool _isAbleToAttack = true;
     private WaitForSeconds _attackWait;
-    
-    private void Start()
+
+    private void Awake()
     {
         _attackWait = new WaitForSeconds(_attackCoolDown);
         _animator = GetComponent<PlayerAnimator>();
@@ -43,7 +40,7 @@ public class Player : MonoBehaviour
 
     private void Heal(float health)
     {
-        _healthController.Heal(health);
+        _health.Heal(health);
     }
     
     private void Die()
@@ -71,8 +68,9 @@ public class Player : MonoBehaviour
     public void TakeDamage(float damage)
     {
         _animator.SetAttacked();
-        _healthController.TakeDamage(damage);
-        if(_healthController.Health <= 0)
+        _health.TakeDamage(damage);
+        
+        if(_health.IsAlive == false)
             Die();
     }
 }

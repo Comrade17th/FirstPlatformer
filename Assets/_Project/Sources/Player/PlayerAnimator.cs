@@ -25,7 +25,7 @@ public class PlayerAnimator : MonoBehaviour
         
         _animator.SetBool(PlayerAnimatorData.Params.IsGrounded, isGrounded);
     }
-
+    
     public void SetAttacked()
     {
         _animator.SetTrigger(PlayerAnimatorData.Params.Attacked);
