@@ -3,12 +3,13 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    [field: SerializeField] public float MaxValue { get; private set; }
-    
-    public bool IsAlive => _currentValue > 0;
     public event Action<float> ValueChanged;
 
     private float _currentValue;
+    
+    [field: SerializeField] public float MaxValue { get; private set; }
+
+    public bool IsAlive => _currentValue > 0;
 
     private void Awake()
     {
@@ -19,20 +20,27 @@ public class Health : MonoBehaviour
     {
         ValueChanged?.Invoke(_currentValue);
     }
-
-    public void TakeDamage(float value)
+    
+    private void ChangeValue(float value, float modifier, float maxValue)
     {
-        _currentValue -= value;
-        _currentValue = Mathf.Clamp(_currentValue, 0, MaxValue);
+        value = Mathf.Clamp(value, 0, maxValue);
+        _currentValue += modifier * value;
         
         ValueChanged?.Invoke(_currentValue);
     }
 
+    public void TakeDamage(float value)
+    {
+        float modifier = -1;
+        
+        ChangeValue(value, modifier, _currentValue);
+    }
+
     public void Heal(float value)
     {
-        _currentValue += value;
-        _currentValue = Mathf.Clamp(_currentValue, 0, MaxValue);
+        float maxValue = MaxValue - _currentValue;
+        float modifier = 1;
         
-        ValueChanged?.Invoke(_currentValue);
+        ChangeValue(value, modifier, maxValue);
     }
 }

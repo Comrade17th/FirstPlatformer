@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
 {
    private const string Horizontal = nameof(Horizontal);
    private const string JumpButton = "Jump";
-   
+
    [SerializeField] private Transform _view;
    [SerializeField] private Rigidbody2D _rigidbody;
    [SerializeField] private float _speed = 10f;

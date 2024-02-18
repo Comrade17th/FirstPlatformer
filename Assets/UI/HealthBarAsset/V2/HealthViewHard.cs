@@ -5,13 +5,8 @@ public class HealthViewHard : HealthView
 {
     [SerializeField] private Slider _healthSlider;
 
-    private void Awake()
-    {
-        _healthSlider.maxValue = MaxHealth;
-    }
-
     public override void UpdateHealth(float targetValue)
     {
-        _healthSlider.value = targetValue;
+        _healthSlider.value = targetValue / MaxHealth;
     }
 }
