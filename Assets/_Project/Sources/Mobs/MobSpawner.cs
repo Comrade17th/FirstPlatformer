@@ -45,11 +45,12 @@ public class MobSpawner : MonoBehaviour
         while (_deadMobs.Count > 0)
         {
             yield return _wait;
-            int id = _deadMobs.Pop();
-            Respawn(id);
+            if (_deadMobs.Count > 0)
+            {
+                int id = _deadMobs.Pop();
+                Respawn(id);   
+            }
         }
-            
-        yield break;   
     }
 
     private void Respawn(int id)

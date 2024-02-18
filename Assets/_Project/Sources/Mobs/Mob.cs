@@ -23,6 +23,8 @@ public class Mob : MonoBehaviour
     private WaitForSeconds _waitAttack;
     private bool _isAbleToAttack = true;
 
+    public bool IsAlive => _health.IsAlive;
+    
     public event Action Dead;
 
     private void Awake()

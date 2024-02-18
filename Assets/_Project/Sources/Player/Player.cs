@@ -5,12 +5,14 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     private const int LeftMouseButton = 0;
+    private const int RightMouseButton = 1;
     
     [SerializeField] private float _baseDamage = 10;
     [SerializeField] private float _attackCoolDown = 2f;
     [SerializeField] private Health _health;
     [SerializeField] private AttackController _attackController;
     [SerializeField] private ItemPicker _picker;
+    [SerializeField] private Vamprisim _vamprisim;
     
     private PlayerAnimator _animator;
     
@@ -30,6 +32,11 @@ public class Player : MonoBehaviour
             Attack();
             StartCoroutine(AttackCooldown());
         }
+
+        if (Input.GetMouseButtonDown(RightMouseButton))
+        {
+            Vampirism();
+        }
     }
 
     private void Attack()
@@ -41,6 +48,11 @@ public class Player : MonoBehaviour
     private void Heal(float health)
     {
         _health.Heal(health);
+    }
+
+    private void Vampirism()
+    {
+        _vamprisim.DrinkBlood();
     }
     
     private void Die()

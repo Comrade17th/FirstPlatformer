@@ -43,7 +43,7 @@ public class Follower : MonoBehaviour
     {
         if (other.TryGetComponent(out Player player))
         {
-            if(_mob.enabled)
+            if(_mob.gameObject.activeSelf)
                 _waitAfterMiss = StartCoroutine(TimeMiss());
         }
     }

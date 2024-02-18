@@ -769,6 +769,10 @@ PrefabInstance:
       propertyPath: m_RenderMode
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4712324665893419165, guid: 7b273ab0522e54739bddbde51161923b, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1000
+      objectReference: {fileID: 0}
     - target: {fileID: 7322310890244097485, guid: 7b273ab0522e54739bddbde51161923b, type: 3}
       propertyPath: m_Name
       value: Health Bar Smooth(Canvas)

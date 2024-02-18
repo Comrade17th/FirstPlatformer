@@ -13,14 +13,11 @@ public class ItemPicker : MonoBehaviour
     
     public void Pick(PickableCoin coin)
     {
-        Debug.Log("coin");
         PickedCoin?.Invoke(coin.Amount);
-        Debug.Log("Invoked");
     }
     
     public void Pick(PickableMedicine medicine)
     {
-        Debug.Log("Medicine Picked");
         PickedMedicine?.Invoke(medicine.HealthRegen);
     }
 }
