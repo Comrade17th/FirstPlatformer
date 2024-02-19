@@ -24,6 +24,16 @@ public class Player : MonoBehaviour
         _attackWait = new WaitForSeconds(_attackCoolDown);
         _animator = GetComponent<PlayerAnimator>();
     }
+    
+    private void OnEnable()
+    {
+        _picker.PickedMedicine += Heal;
+    }
+
+    private void OnDisable()
+    {
+        _picker.PickedMedicine -= Heal;
+    }
 
     private void Update()
     {
@@ -37,6 +47,15 @@ public class Player : MonoBehaviour
         {
             Vampirism();
         }
+    }
+    
+    public void TakeDamage(float damage)
+    {
+        _animator.SetAttacked();
+        _health.TakeDamage(damage);
+        
+        if(_health.IsAlive == false)
+            Die();
     }
 
     private void Attack()
@@ -59,30 +78,11 @@ public class Player : MonoBehaviour
     {
         Debug.Log("You're DEAD!");
     }
-    
-    private void OnEnable()
-    {
-        _picker.PickedMedicine += Heal;
-    }
-
-    private void OnDisable()
-    {
-        _picker.PickedMedicine -= Heal;
-    }
 
     private IEnumerator AttackCooldown()
     {
         _isAbleToAttack = false;
         yield return _attackWait;
         _isAbleToAttack = true;
-    }
-    
-    public void TakeDamage(float damage)
-    {
-        _animator.SetAttacked();
-        _health.TakeDamage(damage);
-        
-        if(_health.IsAlive == false)
-            Die();
     }
 }

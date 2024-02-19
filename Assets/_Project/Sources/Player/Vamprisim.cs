@@ -37,6 +37,23 @@ public class Vamprisim : MonoBehaviour
             _enemiesInZone.Remove(enemy.transform);
         }
     }
+    
+    public void DrinkBlood()
+    {
+        InterruptDrinking();
+        
+        if(TryGetClosestEnemy(out Mob enemy))
+            _coroutine = StartCoroutine(BloodDrinking(enemy));
+    }
+
+    public void InterruptDrinking()
+    {
+        if (_coroutine != null)
+            StopCoroutine(_coroutine);
+
+        _coroutine = null;
+    }
+    
     private IEnumerator BloodDrinking(Mob enemy)
     {
         for (float i = 0; i < _duration; i += _timeStealStep)
@@ -67,21 +84,5 @@ public class Vamprisim : MonoBehaviour
         }
 
         return isExist;
-    }
-    
-    public void DrinkBlood()
-    {
-        InterruptDrinking();
-        
-        if(TryGetClosestEnemy(out Mob enemy))
-            _coroutine = StartCoroutine(BloodDrinking(enemy));
-    }
-
-    public void InterruptDrinking()
-    {
-        if (_coroutine != null)
-            StopCoroutine(_coroutine);
-
-        _coroutine = null;
     }
 }

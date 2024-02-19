@@ -21,14 +21,6 @@ public class Health : MonoBehaviour
         ValueChanged?.Invoke(_currentValue);
     }
     
-    private void ChangeValue(float value, float modifier, float maxValue)
-    {
-        value = Mathf.Clamp(value, 0, maxValue);
-        _currentValue += modifier * value;
-        
-        ValueChanged?.Invoke(_currentValue);
-    }
-
     public void TakeDamage(float value)
     {
         float modifier = -1;
@@ -42,5 +34,13 @@ public class Health : MonoBehaviour
         float modifier = 1;
         
         ChangeValue(value, modifier, maxValue);
+    }
+    
+    private void ChangeValue(float value, float modifier, float maxValue)
+    {
+        value = Mathf.Clamp(value, 0, maxValue);
+        _currentValue += modifier * value;
+        
+        ValueChanged?.Invoke(_currentValue);
     }
 }

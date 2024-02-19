@@ -12,11 +12,6 @@ public class MobMovement : MonoBehaviour
 
     public float Speed => _speed;
 
-    private void Update()
-    {
-        
-    }
-
     public void Follow(Vector3 target)
     {
         Flip(target);

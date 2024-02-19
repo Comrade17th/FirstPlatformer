@@ -17,6 +17,16 @@ public class HealthViewSmooth : HealthView
     {
         _waitStep = new WaitForSeconds(_smoothDelay);
     }
+    
+    public override void UpdateHealth(float targetValue)
+    {
+        targetValue /= MaxHealth;
+        
+        if (targetValue >= _topSlider.value)
+            ChangeSlidersValues(targetValue, _downSlider, _topSlider);
+        else
+            ChangeSlidersValues(targetValue, _topSlider, _downSlider);
+    }
 
     private IEnumerator SmoothChanging(float targetValue, Slider slider)
     {
@@ -38,15 +48,5 @@ public class HealthViewSmooth : HealthView
             StopCoroutine(_coroutine);
             
         _coroutine = StartCoroutine(SmoothChanging(targetValue, smoothSlider)); 
-    }
-    
-    public override void UpdateHealth(float targetValue)
-    {
-        targetValue /= MaxHealth;
-        
-        if (targetValue >= _topSlider.value)
-            ChangeSlidersValues(targetValue, _downSlider, _topSlider);
-        else
-            ChangeSlidersValues(targetValue, _topSlider, _downSlider);
     }
 }

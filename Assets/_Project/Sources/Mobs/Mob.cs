@@ -35,6 +35,31 @@ public class Mob : MonoBehaviour
         _coinSpawner = GetComponent<CoinSpawner>();
         _health = GetComponent<Health>();
     }
+    
+    public void Attack(Player player)
+    {
+        if (_isAbleToAttack)
+        {
+            player.TakeDamage(_baseDamage);
+            StartCoroutine(AttackCooldown());
+        }
+    }
+
+    public void SetAlive()
+    {
+        _health.Heal(_health.MaxValue);
+    }
+
+    public void SetSpawner(MobSpawner spawner, int id)
+    {
+        _spawnId = id;
+        _spawner = spawner;
+    }
+    
+    public void SetRoute(Transform route)
+    {
+        _wanderer.SetWaypointsParent(route);  
+    }
 
     public void TakeDamage(float damage)
     {
@@ -63,30 +88,5 @@ public class Mob : MonoBehaviour
         yield return _waitDie;
         Dead?.Invoke();
         _spawner.MobDead(_spawnId);
-    }
-    
-    public void Attack(Player player)
-    {
-        if (_isAbleToAttack)
-        {
-            player.TakeDamage(_baseDamage);
-            StartCoroutine(AttackCooldown());
-        }
-    }
-
-    public void SetAlive()
-    {
-        _health.Heal(_health.MaxValue);
-    }
-
-    public void SetSpawner(MobSpawner spawner, int id)
-    {
-        _spawnId = id;
-        _spawner = spawner;
-    }
-    
-    public void SetRoute(Transform route)
-    {
-        _wanderer.SetWaypointsParent(route);  
     }
 }
