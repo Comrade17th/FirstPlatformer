@@ -6,7 +6,7 @@ using UnityEngine;
 public class Vamprisim : MonoBehaviour
 {
     [SerializeField] private Health _health;
-    [SerializeField] private float _duration = 6f;
+    [SerializeField] private float _duration = 2f;
     [SerializeField] private float _timeStealStep = 0.5f;
     [SerializeField] private float _healthStealStep = 4f;
     
@@ -59,6 +59,9 @@ public class Vamprisim : MonoBehaviour
         {
             if (enemy.IsAlive)
             {
+                if(_enemiesInZone.Contains(enemy.transform) == false)
+                    DrinkBlood();
+                
                 enemy.TakeDamage(_healthStealStep);
                 _health.Heal(_healthStealStep);
                 yield return _waitDrink;
