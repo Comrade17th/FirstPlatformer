@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
     
     [SerializeField] private float _baseDamage = 10;
     [SerializeField] private float _attackCoolDown = 2f;
+    [SerializeField] private float _vampirismCoolDown = 6f;
+    
     [SerializeField] private Health _health;
     [SerializeField] private AttackController _attackController;
     [SerializeField] private ItemPicker _picker;
@@ -18,10 +20,14 @@ public class Player : MonoBehaviour
     
     private bool _isAbleToAttack = true;
     private WaitForSeconds _attackWait;
+    
+    private bool _isAbleToDrinkBlood = true;
+    private WaitForSeconds _vampirismWait;
 
     private void Awake()
     {
         _attackWait = new WaitForSeconds(_attackCoolDown);
+        _vampirismWait = new WaitForSeconds(_vampirismCoolDown);
         _animator = GetComponent<PlayerAnimator>();
     }
     
@@ -43,9 +49,10 @@ public class Player : MonoBehaviour
             StartCoroutine(AttackCooldown());
         }
 
-        if (Input.GetKeyDown(VampirismButton))
+        if (Input.GetKeyDown(VampirismButton) && _isAbleToDrinkBlood)
         {
-            Vampirism();
+            DrinkBlood();
+            StartCoroutine(VampirismCooldown());
         }
     }
     
@@ -69,7 +76,7 @@ public class Player : MonoBehaviour
         _health.Heal(health);
     }
 
-    private void Vampirism()
+    private void DrinkBlood()
     {
         _vamprisim.DrinkBlood();
     }
@@ -84,5 +91,12 @@ public class Player : MonoBehaviour
         _isAbleToAttack = false;
         yield return _attackWait;
         _isAbleToAttack = true;
+    }
+    
+    private IEnumerator VampirismCooldown()
+    {
+        _isAbleToDrinkBlood = false;
+        yield return _vampirismWait;
+        _isAbleToDrinkBlood = true;
     }
 }
