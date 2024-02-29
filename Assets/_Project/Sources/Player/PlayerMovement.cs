@@ -7,7 +7,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
    private const string Horizontal = nameof(Horizontal);
-   private const string JumpButton = "Jump";
+   private const string Vertical = nameof(Vertical);
 
    [SerializeField] private Transform _view;
    [SerializeField] private Rigidbody2D _rigidbody;
@@ -61,12 +61,14 @@ public class PlayerMovement : MonoBehaviour
 
    private void Jump()
    {
+      bool isJumpButton = Input.GetAxisRaw(Vertical) > 0;
+      
       if (IsGrounded())
          _coyoteTimeCounter = _coyoteTime;
       else
          _coyoteTimeCounter -= Time.deltaTime;
 
-      if (Input.GetButtonDown(JumpButton))
+      if (isJumpButton)
       {
          _jumpBufferCounter = _jumpBufferTime;
       }
@@ -83,7 +85,7 @@ public class PlayerMovement : MonoBehaviour
          StartCoroutine(JumpCooldown());
       }
 
-      if (Input.GetButtonUp(JumpButton) && _rigidbody.velocity.y > 0f)
+      if (isJumpButton && _rigidbody.velocity.y > 0f)
       {
          _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _rigidbody.velocity.y);
          _coyoteTimeCounter = 0f;

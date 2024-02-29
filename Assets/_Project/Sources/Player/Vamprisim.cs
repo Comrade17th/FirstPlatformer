@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,8 +9,8 @@ public class Vamprisim : MonoBehaviour
     [SerializeField] private float _duration = 6f;
     [SerializeField] private float _timeStealStep = 0.5f;
     [SerializeField] private float _healthStealStep = 4f;
-
-    [SerializeField] private List<Transform> _enemiesInZone;
+    
+    private List<Transform> _enemiesInZone;
     private Transform _targetEnemy;
     private WaitForSeconds _waitDrink;
     private Coroutine _coroutine;

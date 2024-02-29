@@ -4,8 +4,8 @@ using UnityEngine;
 [RequireComponent(typeof(Health))]
 public class Player : MonoBehaviour
 {
-    private const int LeftMouseButton = 0;
-    private const int RightMouseButton = 1;
+    [SerializeField] private KeyCode AttackButton = KeyCode.B;
+    [SerializeField] private KeyCode VampirismButton = KeyCode.V;
     
     [SerializeField] private float _baseDamage = 10;
     [SerializeField] private float _attackCoolDown = 2f;
@@ -37,13 +37,13 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(LeftMouseButton) && _isAbleToAttack)
+        if (Input.GetKeyDown(AttackButton) && _isAbleToAttack)
         {
             Attack();
             StartCoroutine(AttackCooldown());
         }
 
-        if (Input.GetMouseButtonDown(RightMouseButton))
+        if (Input.GetKeyDown(VampirismButton))
         {
             Vampirism();
         }
